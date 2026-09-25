@@ -1,0 +1,71 @@
+const r = require("raylib");
+r.InitWindow(800, 800, "Raylib Demo");
+r.SetTargetFPS(60);
+let a = 5;
+let b = 60;
+let c = 115;
+let d = 170;
+let e = 225;
+let f = 280;
+let g = 335;
+let h = 390;
+let i = 445;
+let j = 500;
+let k = 555;
+let l = 610;
+let m = 665;
+let n = 720;
+function valueChange(value) {
+  if (value === 800) {
+    return -10;
+  }
+  return value;
+}
+while (!r.WindowShouldClose()) {
+  a = a + 5;
+  b = b + 5;
+  c = c + 5;
+  d = d + 5;
+  e = e + 5;
+  f = f + 5;
+  g = g + 5;
+  h = h + 5;
+  i = i + 5;
+  j = j + 5;
+  k = k + 5;
+  l = l + 5;
+  m = m + 5;
+  n = n + 5;
+  a = valueChange(a);
+  b = valueChange(b);
+  c = valueChange(c);
+  d = valueChange(d);
+  e = valueChange(e);
+  f = valueChange(f);
+  g = valueChange(g);
+  h = valueChange(h);
+  i = valueChange(i);
+  j = valueChange(j);
+  k = valueChange(k);
+  l = valueChange(l);
+  m = valueChange(m);
+  n = valueChange(n);
+  r.BeginDrawing();
+  r.ClearBackground(r.BLACK);
+  r.DrawRectangle(a, 5, 50, 50, r.YELLOW);
+  r.DrawRectangle(b, 60, 50, 50, r.YELLOW);
+  r.DrawRectangle(c, 115, 50, 50, r.YELLOW);
+  r.DrawRectangle(d, 170, 50, 50, r.YELLOW);
+  r.DrawRectangle(e, 225, 50, 50, r.YELLOW);
+  r.DrawRectangle(f, 280, 50, 50, r.YELLOW);
+  r.DrawRectangle(g, 335, 50, 50, r.YELLOW);
+  r.DrawRectangle(h, 390, 50, 50, r.YELLOW);
+  r.DrawRectangle(i, 445, 50, 50, r.YELLOW);
+  r.DrawRectangle(j, 500, 50, 50, r.YELLOW);
+  r.DrawRectangle(k, 555, 50, 50, r.YELLOW);
+  r.DrawRectangle(l, 610, 50, 50, r.YELLOW);
+  r.DrawRectangle(m, 665, 50, 50, r.YELLOW);
+  r.DrawRectangle(n, 720, 50, 50, r.YELLOW);
+  r.EndDrawing();
+}
+r.CloseWindow();
