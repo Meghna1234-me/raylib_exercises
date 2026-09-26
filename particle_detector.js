@@ -1,59 +1,109 @@
 const r = require("raylib");
 
-const windowWidth = 300;
+const windowWidth = 400;
 const windowHeight = 200;
 const FPS = 60;
 
 const detectorWidth = 20;
 const detectorHeight = windowWidth;
-let detectorX = 0;
 const Y = 0;
-let speed;
+
+const particle1X = windowWidth / 4;
+const particle1Width = 50;
+
+const particle2X = 220;
+const particle2Width = 10;
+
+const particle3X = Y;
+const particle3Y = 70;
+const particle3Width = windowWidth;
+const particle3Height = particle1Width;
+
+let detector1X = 0;
+
+let detector2X = particle1X + particle1Width;
+
+const detector3X = particle3X;
+let detector3Y = 0;
+const detector3Width = particle3Width;
+const detector3Height = detectorWidth;
+
+let speed1;
+let speed2;
+let speed3;
 
 function setup() {
   r.InitWindow(windowWidth, windowHeight, "particle detector");
   r.SetTargetFPS(FPS);
 }
 
-function calcOffset(windowWidth, detectorWidth) {
-  const edge = windowWidth - detectorWidth;
-  if (detectorX === 0) {
-    speed = 1;
+const detector1start = 0;
+const detector2start = particle1X + particle1Width;
+const detector3start = 0;
+
+function calcOffset1(detectorWidth, detectorstart, particleWidth, particleX) {
+  const edge = particleX + particleWidth - detectorWidth;
+  if (detector1X === detectorstart) {
+    speed1 = 1;
   }
-  else if (detectorX === edge) {
-    speed = -1;
+  else if (detector1X === edge) {
+    speed1 = -1;
   }
-  detectorX = detectorX + speed;
+  detector1X = detector1X + speed1;
 }
 
-function isOverlapping(x, width) {
+function calcOffset2(detectorWidth, detectorstart) {
+  const edge = windowWidth - detectorWidth;
+  if (detector2X === detectorstart) {
+    speed2 = 1;
+  }
+  else if (detector2X === edge) {
+    speed2 = -1;
+  }
+  detector2X = detector2X + speed2;
+}
+
+function calcOffset3(detectorstart) {
+  const edge = windowHeight - detector3Height;
+  if (detector3Y === detectorstart) {
+    speed3 = 1;
+  }
+  else if (detector3Y === edge) {
+    speed3 = -1;
+  }
+  detector3Y = detector3Y + speed3;
+}
+
+function isOverlapping(x, width, detectorX) {
   return detectorX + detectorWidth < x || detectorX > x + width;
 }
 
-function chooseColor() {
-  return (isOverlapping(particle1X, particle1Width)) && (isOverlapping(particle2X, particle2Width)) ? r.WHITE : r.RED;
+function chooseColor(particleX, particleWidth, detectorX) {
+  return (isOverlapping(particleX, particleWidth, detectorX)) ? r.WHITE : r.RED;
 }
 
-const particle1X = windowWidth / 3;
-const particle1Width = 50;
 
-const particle2X = 220;
-const particle2Width = 10;
-
-function drawDetector(x, y, width, height) {
-  const color = chooseColor();
+function drawDetector() {
+  const color1 = chooseColor(particle1X, particle1Width, detector1X);
+  const color2 = chooseColor(particle2X, particle2Width, detector2X);
+  const color3 = chooseColor(particle3Y, particle3Height, detector3Y);
   r.BeginDrawing();
   r.ClearBackground(r.BLACK);
   r.DrawRectangle(particle1X, Y, particle1Width, windowHeight, r.SKYBLUE);
   r.DrawRectangle(particle2X, Y, particle2Width, windowHeight, r.SKYBLUE);
-  r.DrawRectangle(x, y, width, height, color);
+  r.DrawRectangle(particle3X, particle3Y, particle3Width, particle3Height, r.SKYBLUE);
+  r.DrawRectangle(detector1X, Y, detectorWidth, detectorHeight, color1);
+  r.DrawRectangle(detector2X, Y, detectorWidth, detectorHeight, color2);
+  r.DrawRectangle(detector3X, detector3Y, detector3Width, detector3Height, color3);
   r.EndDrawing();
 }
 
 function loop() {
   while (!r.WindowShouldClose()) {
-    calcOffset(windowWidth, detectorWidth);
-    drawDetector(detectorX, Y, detectorWidth, detectorHeight, r.WHITE);
+    calcOffset1(detectorWidth, detector1start, particle1Width, particle1X);
+    calcOffset2(detectorWidth, detector2start);
+    calcOffset3(detector3start);
+    drawDetector();
   }
 }
 
