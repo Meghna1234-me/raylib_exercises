@@ -8,20 +8,20 @@ const detectorWidth = 20;
 const detectorHeight = windowWidth;
 const Y = 0;
 
-const particle1X = windowWidth / 4;
-const particle1Width = 50;
+const particle1X = windowWidth / 2 - windowWidth / 4;
+const particle1Width = 40;
 
-const particle2X = 220;
+const particle2X = windowWidth / 2 + windowWidth / 4;
 const particle2Width = 10;
 
 const particle3X = Y;
-const particle3Y = 70;
+const particle3Y = windowHeight / 3;
 const particle3Width = windowWidth;
 const particle3Height = particle1Width;
 
 let detector1X = 0;
 
-let detector2X = particle1X + particle1Width;
+let detector2X = windowWidth / 2;
 
 const detector3X = particle3X;
 let detector3Y = 0;
@@ -38,11 +38,11 @@ function setup() {
 }
 
 const detector1start = 0;
-const detector2start = particle1X + particle1Width;
+const detector2start = windowWidth / 2;
 const detector3start = 0;
 
-function calcOffset1(detectorWidth, detectorstart, particleWidth, particleX) {
-  const edge = particleX + particleWidth - detectorWidth;
+function calcOffset1(windowWidth, detectorstart) {
+  const edge = windowWidth / 2 - detectorWidth;
   if (detector1X === detectorstart) {
     speed1 = 1;
   }
@@ -55,10 +55,10 @@ function calcOffset1(detectorWidth, detectorstart, particleWidth, particleX) {
 function calcOffset2(detectorWidth, detectorstart) {
   const edge = windowWidth - detectorWidth;
   if (detector2X === detectorstart) {
-    speed2 = 1;
+    speed2 = 2;
   }
   else if (detector2X === edge) {
-    speed2 = -1;
+    speed2 = -2;
   }
   detector2X = detector2X + speed2;
 }
@@ -100,7 +100,7 @@ function drawDetector() {
 
 function loop() {
   while (!r.WindowShouldClose()) {
-    calcOffset1(detectorWidth, detector1start, particle1Width, particle1X);
+    calcOffset1(windowWidth, detector1start);
     calcOffset2(detectorWidth, detector2start);
     calcOffset3(detector3start);
     drawDetector();
