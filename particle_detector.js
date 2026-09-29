@@ -5,105 +5,113 @@ const windowHeight = 200;
 const FPS = 60;
 
 const detectorWidth = 20;
-const detectorHeight = windowWidth;
+const detectorHeight = windowHeight;
 const Y = 0;
 
-const particle1X = windowWidth / 2 - windowWidth / 4;
-const particle1Width = 40;
+let d1X = 0;
+const d1Edge = windowWidth / 2;
+let d1Velocity = 1;
 
-const particle2X = windowWidth / 2 + windowWidth / 4;
-const particle2Width = 10;
+let d2X = windowWidth / 2;
+const d2Edge = windowWidth;
+let d2Velocity = 2;
 
-const particle3X = Y;
-const particle3Y = windowHeight / 3;
-const particle3Width = windowWidth;
-const particle3Height = particle1Width;
+const f1X = windowWidth / 2 - windowWidth / 4;
+const f1Width = 40;
+const f1End = f1X + f1Width;
 
-let detector1X = 0;
+const f2X = windowWidth / 2 + windowWidth / 4;
+const f2Width = 10;
+const f2End = f2X + f2Width;
 
-let detector2X = windowWidth / 2;
+const f3X = Y;
+const f3Y = windowHeight / 3;
+const f3Width = windowWidth;
+const f3Height = f1Width - 10;
+const f3End = f3Y + f3Height;
 
-const detector3X = particle3X;
-let detector3Y = 0;
-const detector3Width = particle3Width;
-const detector3Height = detectorWidth;
+let d3X = f3X;
+let d3Y = 0;
+const d3End = windowHeight;
+const d3Width = f3Width;
+const d3Height = detectorWidth;
 
-let speed1;
-let speed2;
-let speed3;
+let d3Velocity = 1;
 
 function setup() {
   r.InitWindow(windowWidth, windowHeight, "particle detector");
   r.SetTargetFPS(FPS);
 }
 
-const detector1start = 0;
-const detector2start = windowWidth / 2;
-const detector3start = 0;
+const d1Start = 0;
+const d2Start = windowWidth / 2;
+const d3Start = 0;
 
-function calcOffset1(windowWidth, detectorstart) {
-  const edge = windowWidth / 2 - detectorWidth;
-  if (detector1X === detectorstart) {
-    speed1 = 1;
-  }
-  else if (detector1X === edge) {
-    speed1 = -1;
-  }
-  detector1X = detector1X + speed1;
+function isOutofBound(detectorX, detectorEnd, detectorStart, detectorWidth) {
+  const end = detectorEnd - detectorWidth;
+  return detectorX < detectorStart || detectorX > end;
 }
 
-function calcOffset2(detectorWidth, detectorstart) {
-  const edge = windowWidth - detectorWidth;
-  if (detector2X === detectorstart) {
-    speed2 = 2;
-  }
-  else if (detector2X === edge) {
-    speed2 = -2;
-  }
-  detector2X = detector2X + speed2;
+function changeVelocity(detectorX, detectorStart, detectorEnd, detectorWidth, speed) {
+  return isOutofBound(detectorX, detectorEnd, detectorStart, detectorWidth) ? -speed : speed;
 }
 
-function calcOffset3(detectorstart) {
-  const edge = windowHeight - detector3Height;
-  if (detector3Y === detectorstart) {
-    speed3 = 1;
-  }
-  else if (detector3Y === edge) {
-    speed3 = -1;
-  }
-  detector3Y = detector3Y + speed3;
+function changeDetectorPosition(detectorX, detectorVelocity) {
+  return detectorX + detectorVelocity;
 }
 
-function isOverlapping(x, width, detectorX) {
-  return detectorX + detectorWidth < x || detectorX > x + width;
+function update() {
+  d1Velocity = changeVelocity(d1X, d1Start, d1Edge, detectorWidth, d1Velocity);
+  d1X = changeDetectorPosition(d1X, d1Velocity);
+
+  d2Velocity = changeVelocity(d2X, d2Start, d2Edge, detectorWidth, d2Velocity);
+  d2X = changeDetectorPosition(d2X, d2Velocity);
+
+  d3Velocity = changeVelocity(d3Y, d3Start, d3End, d3Height, d3Velocity);
+  d3Y = changeDetectorPosition(d3Y, d3Velocity);
 }
 
-function chooseColor(particleX, particleWidth, detectorX) {
-  return (isOverlapping(particleX, particleWidth, detectorX)) ? r.WHITE : r.RED;
+function isOverlapping(start1, end1, start2, end2) {
+  return !(end1 < start2 || start1 > end2);
 }
 
+function chooseColor(detectorX, detectorEnd, particleX, particleEnd) {
+  return (isOverlapping(detectorX, detectorEnd, particleX, particleEnd)) ? r.RED : r.WHITE;
+}
 
-function drawDetector() {
-  const color1 = chooseColor(particle1X, particle1Width, detector1X);
-  const color2 = chooseColor(particle2X, particle2Width, detector2X);
-  const color3 = chooseColor(particle3Y, particle3Height, detector3Y);
+function drawField(particle1X, particle1Width, windowHeight, color) {
+  r.DrawRectangle(particle1X, 0, particle1Width, windowHeight, color);
+}
+
+function drawDetector(detectorX, detectorWidth, detectorHeight, color) {
+  r.DrawRectangle(detectorX, 0, detectorWidth, detectorHeight, color);
+}
+
+function draw() {
   r.BeginDrawing();
   r.ClearBackground(r.BLACK);
-  r.DrawRectangle(particle1X, Y, particle1Width, windowHeight, r.SKYBLUE);
-  r.DrawRectangle(particle2X, Y, particle2Width, windowHeight, r.SKYBLUE);
-  r.DrawRectangle(particle3X, particle3Y, particle3Width, particle3Height, r.SKYBLUE);
-  r.DrawRectangle(detector1X, Y, detectorWidth, detectorHeight, color1);
-  r.DrawRectangle(detector2X, Y, detectorWidth, detectorHeight, color2);
-  r.DrawRectangle(detector3X, detector3Y, detector3Width, detector3Height, color3);
+
+  let d1End = d1X + detectorWidth;
+  let d2End = d2X + detectorWidth;
+  let d3End = d3Y + d3Height;
+  let d1Color = chooseColor(d1X, d1End, f1X, f1End);
+  let d2Color = chooseColor(d2X, d2End, f2X, f2End);
+  let d3Color = chooseColor(d3Y, d3End, f3Y, f3End);
+
+  drawField(f1X, f1Width, windowHeight, r.SKYBLUE);
+  drawField(f2X, f2Width, windowHeight, r.SKYBLUE);
+  r.DrawRectangle(f3X, f3Y, f3Width, f3Height, r.SKYBLUE);
+  drawDetector(d1X, detectorWidth, detectorHeight, d1Color);
+  drawDetector(d2X, detectorWidth, detectorHeight, d2Color);
+  r.DrawRectangle(d3X, d3Y, d3Width, d3Height, d3Color);
+
   r.EndDrawing();
 }
 
 function loop() {
   while (!r.WindowShouldClose()) {
-    calcOffset1(windowWidth, detector1start);
-    calcOffset2(detectorWidth, detector2start);
-    calcOffset3(detector3start);
-    drawDetector();
+    update();
+    draw();
   }
 }
 
