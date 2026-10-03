@@ -70,6 +70,7 @@ function draw() {
   let d1End = d1.X + detectorWidth;
   let d2End = d2.X + detectorWidth;
   let d3End = d3.Y + d3.Height;
+
   let d1Color = chooseColor(d1.X, d1End, f1X, f1End);
   let d2Color = chooseColor(d2.X, d2End, f2X, f2End);
   let d3Color = chooseColor(d3.Y, d3End, f3Y, f3End);

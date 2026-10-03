@@ -11,8 +11,19 @@ function changeDetectorPosition(detectorX, detectorVelocity) {
   return detectorX + detectorVelocity;
 }
 
+function drawDetector(d) {
+  drawRange(d)
+}
+
+function createDetector(x, y, width, height, color) {
+  return {
+    x, y, width, height, color
+  }
+}
+
 module.exports = {
   isOutofBound,
   changeVelocity,
   changeDetectorPosition,
+  createDetector,
 };
