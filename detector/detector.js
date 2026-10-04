@@ -1,3 +1,15 @@
+function createDetector(lower, upper, velocity) {
+  return {
+    width: 20,
+    height: 200,
+    X: 0,
+    Y: 0,
+    start: lower,
+    edge: upper,
+    speed: velocity,
+  };
+}
+
 function isOutofBound(detectorX, detectorEnd, detectorStart, detectorWidth) {
   const end = detectorEnd - detectorWidth;
   return detectorX < detectorStart || detectorX > end;
@@ -15,10 +27,8 @@ function drawDetector(d) {
   drawRange(d)
 }
 
-function createDetector(x, y, width, height, color) {
-  return {
-    x, y, width, height, color
-  }
+function update(d) {
+
 }
 
 module.exports = {
