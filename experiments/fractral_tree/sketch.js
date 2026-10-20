@@ -16,11 +16,11 @@ const start = {
 };
 const end = {
   x: 500,
-  y: 500,
+  y: 600,
 };
 
 const length = 100;
-const angle = 0;
+const angle = 85;
 
 function update() {
   //change the state
@@ -30,33 +30,30 @@ function getRadian(angle) {
   return angle * (Math.PI / 180);
 }
 
-function drawFractralTree(depth, x, y, length, i) {
+function drawFractralTree(depth, x, y, length, angle, thickness) {
   if (depth <= 0) return;
-  const rightEndX = (x + (length * 85 / 100) * Math.cos(getRadian(angle - (90 - angle) * i)));
-  const rightEndY = (y - (length * 85 / 100) * Math.sin(getRadian(angle - (90 - angle) * i)));
 
+  const rightEndX = (x + (length * 85 / 100) * Math.cos(getRadian(angle * 90 / 100)));
+  const rightEndY = (y - (length * 85 / 100) * Math.sin(getRadian(angle * 90 / 100)));
 
-  const leftEndX = (x - (length * 85 / 100) * Math.cos(getRadian(angle - (90 - angle) * i)));
-  const leftEndY = (y - (length * 85 / 100) * Math.sin(getRadian(angle - (90 - angle) * i)));
+  const leftEndX = (x - (length * 85 / 100) * Math.cos(getRadian(angle * 90 / 100)));
+  const leftEndY = (y - (length * 85 / 100) * Math.sin(getRadian(angle * 90 / 100)));
 
-  // console.log(x, y, leftEndX, leftEndY);
-
-  r.DrawLine(x, y, rightEndX, rightEndY, r.WHITE);
-  r.DrawLine(x, y, leftEndX, leftEndY, r.WHITE);
-  drawFractralTree(depth - 1, rightEndX, rightEndY, (length * 85 / 100), i + 1);
-  drawFractralTree(depth - 1, leftEndX, leftEndY, (length * 85 / 100), i + 1);
-  // drawFractralTree(depth - 1);
+  r.DrawLineEx({ x: x, y: y }, { x: rightEndX, y: rightEndY }, (thickness * 50 / 100), r.WHITE);
+  r.DrawLineEx({ x: x, y: y }, { x: leftEndX, y: leftEndY }, (thickness * 50 / 100), r.WHITE);
+  drawFractralTree(depth - 1, rightEndX, rightEndY, (length * 85 / 100), (angle * 85 / 100), (thickness * 50 / 100));
+  drawFractralTree(depth - 1, leftEndX, leftEndY, (length * 85 / 100), (angle * 85 / 100), (thickness * 50 / 100));
 }
 
 function draw() {
   r.BeginDrawing();
   r.ClearBackground(r.BLACK);
   let i = 0;
-  r.DrawLineV(start, end, r.WHITE);
+  r.DrawLineEx(start, end, 10, r.WHITE);
   // r.DrawLine(400, 300, 470, 260, r.WHITE);
   // r.DrawLine(470, 260, 526, 228, r.WHITE);
   // r.DrawLine(526, 228, 571, 203, r.WHITE);
-  drawFractralTree(4, end.x, end.y, 100, i);
+  drawFractralTree(8, end.x, end.y, length, angle, 10);
   r.EndDrawing();
 }
 
