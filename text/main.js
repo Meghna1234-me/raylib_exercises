@@ -37,7 +37,7 @@ while (!r.WindowShouldClose()) {
   for (let i = 0; i < 20; i++) {
     tile[i] = [];
     for (let j = 0; j < 20; j++) {
-      tile[i][j] = drawing[((i * j) % 6 % 3)]
+      tile[i][j] = drawing[((i * j) % 7 % 3)]
     }
   }
   for (let row = 0; row < 20; row++) {
