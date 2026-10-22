@@ -1,20 +1,21 @@
 const r = require("raylib");
 
 r.SetTraceLogLevel(r.LOG_NONE);
-r.InitWindow(640, 400, "text");
-r.SetTargetFPS(60);
+r.InitWindow(600, 600, "text");
+r.SetTargetFPS(3);
 
-let cf = 0;
 const target = r.LoadRenderTexture(200, 40);
 
 r.BeginTextureMode(target);
 
-r.DrawText("hii", 0, 0, 40, r.DARKBLUE);
+r.DrawText("hii", 0, 0, 40, r.WHITE);
 r.DrawRectangle(150, 0, 40, 40, r.GOLD);
 
 r.EndTextureMode();
+let cf = 0;
 
 while (!r.WindowShouldClose()) {
+  cf++;
   const source1 = {
     x: 0,
     y: 0,
@@ -29,15 +30,15 @@ while (!r.WindowShouldClose()) {
   }
   r.BeginDrawing();
 
-  r.ClearBackground(r.WHITE);
+  r.ClearBackground(r.DARKGRAY);
 
-  const drawing = [source1, source2, source2];
+  const drawing = [source1, source2, source2, source1];
   const tile = [];
 
   for (let i = 0; i < 20; i++) {
     tile[i] = [];
     for (let j = 0; j < 20; j++) {
-      tile[i][j] = drawing[((i * j) % 7 % 3)]
+      tile[i][j] = drawing[((i * j + cf) % 7 % 4)]
     }
   }
   for (let row = 0; row < 20; row++) {
