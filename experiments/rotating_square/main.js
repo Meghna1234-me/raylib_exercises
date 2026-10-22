@@ -1,9 +1,11 @@
 const sketch = require("./sketch");
 
 function loop() {
+  let cf = 0;
   while (sketch.running()) {
+    cf += 0.5
     sketch.update();
-    sketch.draw();
+    sketch.draw(cf);
   }
 }
 
