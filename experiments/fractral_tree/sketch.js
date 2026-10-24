@@ -48,11 +48,7 @@ function drawFractralTree(depth, x, y, length, angle, thickness) {
 function draw() {
   r.BeginDrawing();
   r.ClearBackground(r.BLACK);
-  let i = 0;
   r.DrawLineEx(start, end, 10, r.WHITE);
-  // r.DrawLine(400, 300, 470, 260, r.WHITE);
-  // r.DrawLine(470, 260, 526, 228, r.WHITE);
-  // r.DrawLine(526, 228, 571, 203, r.WHITE);
   drawFractralTree(8, end.x, end.y, length, angle, 10);
   r.EndDrawing();
 }

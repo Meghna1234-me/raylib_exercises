@@ -23,7 +23,7 @@ while (!r.WindowShouldClose()) {
     r.DrawCircle(cx, cy, 6, r.RED);
     r.DrawLineEx({ x: cx, y: cy }, { x, y }, 2, r.BLACK);
     angle += 10;
-    angle1 += 8;
+    angle1 += 10;
   }
   r.EndDrawing();
 }

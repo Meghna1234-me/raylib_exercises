@@ -20,7 +20,7 @@ function draw(cf) {
   r.BeginDrawing();
   r.ClearBackground(r.BLACK);
   for (let i = 0; i < 500; i = i + 2) {
-    r.DrawPolyLines({ x: 400, y: 400 }, 4, radi + i + cf % 200, rotate + cf, r.WHITE);
+    r.DrawPolyLines({ x: 400, y: 400 }, 4, radi + i + cf, rotate + cf, r.WHITE);
     rotate += 10;
   }
   r.EndDrawing();
